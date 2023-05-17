@@ -15,7 +15,7 @@ const Sidebar = () => {
 	const pathname = usePathname();
 
 	return (
-		<div className='grid content-start justify-items-center gap-4 bg-indigo-50 p-2'>
+		<div className='grid content-start justify-items-center gap-4 bg-indigo-50/40 p-4'>
 			{routes.map((route, i) => (
 				<SidebarItem
 					key={i}
