@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export const friends: Friend[] = [
+export const friends: User[] = [
 	{
 		id: 1,
 		name: 'Joshua Dela Cruz',

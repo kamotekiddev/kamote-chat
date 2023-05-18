@@ -1,5 +1,4 @@
-import React from 'react';
-import EmptyState from './EmptyState';
+import EmptyState from '@/components/EmptyState';
 
 const Chats = () => {
 	return (
