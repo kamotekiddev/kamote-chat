@@ -1,25 +1,16 @@
-import moment from 'moment';
+'use client';
+
 import { FiUsers } from 'react-icons/fi';
+import { useRouter } from 'next/navigation';
+
+import { friends } from '@/data/friends';
 import FriendsListItem from './FriendsListItem';
 
-interface Props {}
+const FriendsList = () => {
+	const router = useRouter();
+	const handleSelectFriend = (friend: Friend) =>
+		router.push(`/chats/${friend.id}`);
 
-const friends = [
-	{
-		id: 1,
-		name: 'Joshua Dela Cruz',
-		isOnline: true,
-		lastOnline: moment().toString(),
-	},
-	{
-		id: 1,
-		name: 'Ezekiel The Kamote',
-		isOnline: false,
-		lastOnline: moment().startOf('day').toString(),
-	},
-];
-
-const FriendsList = ({}: Props) => {
 	return (
 		<div className='w-full bg-indigo-50/10 p-4'>
 			<header className='flex items-center justify-between px-4'>
@@ -30,7 +21,11 @@ const FriendsList = ({}: Props) => {
 			</header>
 			<div className='mt-5 space-y-2'>
 				{friends.map((friend) => (
-					<FriendsListItem key={friend.id} friend={friend} />
+					<FriendsListItem
+						key={friend.id}
+						friend={friend}
+						onSelectFriend={handleSelectFriend}
+					/>
 				))}
 			</div>
 		</div>

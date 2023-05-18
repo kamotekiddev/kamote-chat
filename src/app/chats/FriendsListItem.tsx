@@ -1,14 +1,8 @@
 import moment from 'moment';
 
-interface Friend {
-	id: number;
-	name: string;
-	isOnline: boolean;
-	lastOnline: string;
-}
-
 interface Props {
 	friend: Friend;
+	onSelectFriend: (fried: Friend) => void;
 }
 
 moment.updateLocale('en', {
@@ -30,15 +24,16 @@ moment.updateLocale('en', {
 	},
 });
 
-const FriendsListItem = ({ friend }: Props) => {
+const FriendsListItem = ({ friend, onSelectFriend }: Props) => {
 	const subTitle = friend.isOnline
 		? 'Online'
 		: moment(friend.lastOnline).fromNow();
 
-	console.log(friend);
-
 	return (
-		<button className='block w-full rounded-lg p-2 px-4 text-left hover:bg-indigo-50'>
+		<button
+			onClick={() => onSelectFriend(friend)}
+			className='block w-full rounded-lg p-2 px-4 text-left hover:bg-indigo-50'
+		>
 			<h1 className='prose-md font-medium'>{friend.name}</h1>
 			<span className='text-sm'>{subTitle}</span>
 		</button>
