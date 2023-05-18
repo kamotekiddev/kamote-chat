@@ -1,8 +1,8 @@
 import moment from 'moment';
 
 interface Props {
-	friend: Friend;
-	onSelectFriend: (fried: Friend) => void;
+	friend: User;
+	onSelectFriend: (fried: User) => void;
 }
 
 moment.updateLocale('en', {

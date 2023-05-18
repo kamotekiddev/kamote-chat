@@ -8,7 +8,7 @@ import FriendsListItem from './FriendsListItem';
 
 const FriendsList = () => {
 	const router = useRouter();
-	const handleSelectFriend = (friend: Friend) =>
+	const handleSelectFriend = (friend: User) =>
 		router.push(`/chats/${friend.id}`);
 
 	return (
