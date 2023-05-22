@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(uuid())
+  name           String?
+  email          String    @unique
+  emailVerfiedAt DateTime?
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  conversations Conversation[]
+  seenMessages  Message[]      @relation("seen")
+  messages      Message[]      @relation("messages")
+  accounts      Account[]
+  Message       Message[]
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refreshToken      String?
+  accessToken       String?
+  expiresAt         Int?
+  tokenType         String?
+  scope             String?
+  idToken           String?
+  sessionDate       String?
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+}
+
+model Conversation {
+  id            String   @id @default(uuid())
+  name          String?
+  isGroup       Boolean?
+  lastMessageAt DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userIds       String[]
+
+  users    User[]
+  messages Message[]
+}
+
+model Message {
+  id             String   @id @default(uuid())
+  body           String?
+  image          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  conversationId String
+  seenByIds      String[]
+  senderId       String
+
+  conversation Conversation @relation(fields: [conversationId], references: [id])
+  sender       User         @relation("messages", fields: [senderId], references: [id])
+  seenByUsers  User[]       @relation("seen")
+  User         User?        @relation(fields: [userId], references: [id])
+  userId       String?
+}
