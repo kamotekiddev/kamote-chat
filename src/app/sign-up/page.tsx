@@ -1,28 +1,41 @@
 'use client';
-import Image from 'next/image';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import axios from 'axios';
 
 export default function SignUp() {
+	const router = useRouter();
 	const [email, setEmail] = useState('');
 	const [name, setName] = useState('');
 	const [password, setPassword] = useState('');
 	const [submitting, setSubmitting] = useState(false);
+	const [isError, setIsError] = useState(false);
+	const [error, setError] = useState<Error>();
+
+	const clearForm = () => {
+		setEmail('');
+		setName('');
+		setPassword('');
+	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setSubmitting(true);
 		try {
-			const user = await axios.post('/api/register', {
+			await axios.post('/api/register', {
 				email,
 				name,
 				password,
 			});
-			console.log(user);
+			setIsError(true);
 			setSubmitting(false);
+			clearForm();
+			router.replace('/');
 		} catch (error) {
-			console.log(error);
 			setSubmitting(false);
+			setIsError(true);
+			if (error instanceof Error) setError(error);
 		}
 	};
 
@@ -117,6 +130,11 @@ export default function SignUp() {
 							/>
 						</div>
 					</div>
+					{isError && (
+						<div className='rounded-lg bg-rose-500 p-2 px-4 text-white'>
+							{error?.message}
+						</div>
+					)}
 					<div>
 						<button
 							type='submit'
@@ -128,12 +146,12 @@ export default function SignUp() {
 					</div>
 				</form>
 				<p className='mt-10 text-center text-sm text-gray-500'>
-					Not a member?
+					Already a member?
 					<a
-						href='#'
+						href='/'
 						className='ml-2 font-semibold leading-6 text-indigo-600 hover:text-indigo-500'
 					>
-						Start a 14 day free trial
+						Sign In
 					</a>
 				</p>
 			</div>
