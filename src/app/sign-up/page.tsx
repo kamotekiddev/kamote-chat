@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 export default function SignUp() {
 	const router = useRouter();
@@ -11,7 +11,7 @@ export default function SignUp() {
 	const [password, setPassword] = useState('');
 	const [submitting, setSubmitting] = useState(false);
 	const [isError, setIsError] = useState(false);
-	const [error, setError] = useState<Error>();
+	const [error, setError] = useState<AxiosError | undefined>();
 
 	const clearForm = () => {
 		setEmail('');
@@ -35,7 +35,7 @@ export default function SignUp() {
 		} catch (error) {
 			setSubmitting(false);
 			setIsError(true);
-			if (error instanceof Error) setError(error);
+			if (error instanceof AxiosError) setError(error);
 		}
 	};
 
@@ -132,7 +132,7 @@ export default function SignUp() {
 					</div>
 					{isError && (
 						<div className='rounded-lg bg-rose-500 p-2 px-4 text-white'>
-							{error?.message}
+							{error?.response?.data as string}
 						</div>
 					)}
 					<div>
