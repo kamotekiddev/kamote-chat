@@ -1,7 +1,44 @@
-import Input from '@/components/Input';
+'use client';
+
+import { FormEvent, useState } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
+import Input from '@/components/Input';
+
+interface Credentials {
+	email: string;
+	password: string;
+}
+
 export default function SignIn() {
+	const [creds, setCreds] = useState<Credentials>({
+		email: '',
+		password: '',
+	});
+	const router = useRouter();
+	const [submitting, setSubmiting] = useState(false);
+	const [error, setError] = useState('');
+
+	const handleSubmit = (e: FormEvent) => {
+		e.preventDefault();
+		setSubmiting(true);
+		signIn('credentials', {
+			...creds,
+			redirect: false,
+			callbackUrl: '/chats',
+		})
+			.then((response) => {
+				if (response?.error) setError(response.error);
+				router.replace(response?.url as string);
+			})
+			.catch((error) => {
+				setError('Internal Server Error');
+			})
+			.finally(() => setSubmiting(false));
+	};
+
 	return (
 		<div className='flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8'>
 			<div className='sm:mx-auto sm:w-full sm:max-w-sm'>
@@ -17,8 +54,16 @@ export default function SignIn() {
 				</h2>
 			</div>
 			<div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
-				<form className='space-y-6' action='#' method='POST'>
-					<Input type='text' label='Email Address' name='email' />
+				<form onSubmit={handleSubmit} className='space-y-6' method='POST'>
+					<Input
+						onChange={(e) =>
+							setCreds((cred) => ({ ...cred, email: e.target.value }))
+						}
+						value={creds.email}
+						type='text'
+						label='Email Address'
+						name='email'
+					/>
 					<div>
 						<div className='flex items-center justify-between'>
 							<label
@@ -36,14 +81,28 @@ export default function SignIn() {
 								</a>
 							</div>
 						</div>
-						<Input type='password' name='password' />
+						<Input
+							onChange={(e) =>
+								setCreds((cred) => ({ ...cred, password: e.target.value }))
+							}
+							value={creds.password}
+							type='password'
+							name='password'
+						/>
 					</div>
+
+					{error && (
+						<div className='rounded-lg bg-rose-500 p-2 px-4 text-white'>
+							{error}
+						</div>
+					)}
 					<div>
 						<button
 							type='submit'
-							className='flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+							disabled={submitting}
+							className='flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:cursor-default disabled:opacity-50'
 						>
-							Sign in
+							{submitting ? 'Signing In' : 'Sign In'}
 						</button>
 					</div>
 				</form>
