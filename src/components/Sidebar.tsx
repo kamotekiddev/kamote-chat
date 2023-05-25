@@ -1,14 +1,15 @@
 'use client';
 
+import { signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
-import { FiUsers, FiLogOut, FiMessageCircle } from 'react-icons/fi';
+import { FiUsers, FiMessageCircle } from 'react-icons/fi';
 
 import SidebarItem from './SidebarItem';
+import LogoutIconButton from './LogoutIconButton';
 
 const routes = [
 	{ icon: FiMessageCircle, pathname: '/chats' },
 	{ icon: FiUsers, pathname: '/friends' },
-	{ icon: FiLogOut, pathname: '/' },
 ];
 
 const Sidebar = () => {
@@ -24,6 +25,7 @@ const Sidebar = () => {
 					isActive={pathname === route.pathname}
 				/>
 			))}
+			<LogoutIconButton onClick={() => signOut()} />
 		</div>
 	);
 };

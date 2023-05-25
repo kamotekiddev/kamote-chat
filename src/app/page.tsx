@@ -1,7 +1,7 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { FormEvent, useEffect, useState } from 'react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
@@ -13,6 +13,7 @@ interface Credentials {
 }
 
 export default function SignIn() {
+	const { status } = useSession();
 	const [creds, setCreds] = useState<Credentials>({
 		email: '',
 		password: '',
@@ -20,6 +21,10 @@ export default function SignIn() {
 	const router = useRouter();
 	const [submitting, setSubmiting] = useState(false);
 	const [error, setError] = useState('');
+
+	useEffect(() => {
+		if (status === 'authenticated') router.push('/chats');
+	}, [status, router]);
 
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
