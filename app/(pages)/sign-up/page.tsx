@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import axios, { AxiosError } from 'axios';
+import Input from '@/components/Input';
 
 export default function SignUp() {
 	const router = useRouter();
@@ -60,46 +61,20 @@ export default function SignUp() {
 					action='#'
 					method='POST'
 				>
-					<div>
-						<label
-							htmlFor='email'
-							className='block text-sm font-medium leading-6 text-gray-900'
-						>
-							Email address
-						</label>
-						<div className='mt-2'>
-							<input
-								id='email'
-								name='email'
-								type='email'
-								autoComplete='email'
-								required
-								value={email}
-								onChange={(e) => setEmail(e.target.value)}
-								className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-							/>
-						</div>
-					</div>
-					<div>
-						<label
-							htmlFor='email'
-							className='block text-sm font-medium leading-6 text-gray-900'
-						>
-							Name
-						</label>
-						<div className='mt-2'>
-							<input
-								id='name'
-								name='name'
-								type='text'
-								autoComplete='email'
-								required
-								value={name}
-								onChange={(e) => setName(e.target.value)}
-								className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-							/>
-						</div>
-					</div>
+					<Input
+						label='Email Address'
+						type='email'
+						name='email'
+						required
+						onChange={(e) => setEmail(e.target.value)}
+					/>
+					<Input
+						label='Name'
+						type='text'
+						name='name'
+						required
+						onChange={(e) => setEmail(e.target.value)}
+					/>
 					<div>
 						<div className='flex items-center justify-between'>
 							<label
@@ -117,18 +92,12 @@ export default function SignUp() {
 								</a>
 							</div>
 						</div>
-						<div className='mt-2'>
-							<input
-								id='password'
-								name='password'
-								type='password'
-								autoComplete='current-password'
-								required
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-								className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-							/>
-						</div>
+						<Input
+							type='text'
+							name='name'
+							required
+							onChange={(e) => setEmail(e.target.value)}
+						/>
 					</div>
 					{isError && (
 						<div className='rounded-lg bg-rose-500 p-2 px-4 text-white'>

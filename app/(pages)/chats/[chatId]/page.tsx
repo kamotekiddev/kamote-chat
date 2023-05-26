@@ -3,8 +3,8 @@
 import moment from 'moment';
 import { useState } from 'react';
 
-import { friends } from '@/data/friends';
-import EmptyState from '@/components/EmptyState';
+import { friends } from '@/app/data/friends';
+import EmptyState from '@/app/components/EmptyState';
 import TypingBox from './TypingBox';
 import ChatHeader from './ChatHeader';
 import Conversations from './Conversations';
