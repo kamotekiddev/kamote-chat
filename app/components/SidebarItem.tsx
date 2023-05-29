@@ -10,7 +10,7 @@ interface Props extends LinkProps {
 
 const SidebarItem = ({ href, isActive, icon: Icon, ...props }: Props) => {
 	return (
-		<Link href={href} {...props}>
+		<Link href={href} className='inline-block' {...props}>
 			<button
 				className={clsx(
 					'group block rounded-lg p-2 transition-all duration-75 ease-linear hover:bg-white',

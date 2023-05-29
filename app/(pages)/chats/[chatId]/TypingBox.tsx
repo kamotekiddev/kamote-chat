@@ -1,6 +1,6 @@
-import { FormEvent, InputHTMLAttributes } from 'react';
+import { ComponentProps, FormEvent } from 'react';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+interface Props extends ComponentProps<'input'> {
 	onSend: () => void;
 }
 
