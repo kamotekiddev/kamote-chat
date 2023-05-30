@@ -17,7 +17,7 @@ const Sidebar = () => {
 	const { data } = useSession();
 
 	return (
-		<div className='grid grid-rows-[1fr_auto] content-start justify-items-center gap-4 bg-indigo-50/40 p-4'>
+		<nav className='grid grid-rows-[1fr_auto] content-start justify-items-center gap-4 bg-indigo-50/40 p-4'>
 			<div className='space-y-4'>
 				{routes.map((route, i) => (
 					<SidebarItem
@@ -36,7 +36,7 @@ const Sidebar = () => {
 					imageUrl={data?.user?.image}
 				/>
 			</div>
-		</div>
+		</nav>
 	);
 };
 
