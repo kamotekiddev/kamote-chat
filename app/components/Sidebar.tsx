@@ -1,11 +1,10 @@
 'use client';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { FiUsers, FiMessageCircle } from 'react-icons/fi';
 
 import SidebarItem from './SidebarItem';
 import LogoutIconButton from './LogoutIconButton';
-import UserAvatar from './UserAvatar';
 
 const routes = [
 	{ icon: FiMessageCircle, pathname: '/chats' },
@@ -14,7 +13,6 @@ const routes = [
 
 const Sidebar = () => {
 	const pathname = usePathname();
-	const { data } = useSession();
 
 	return (
 		<nav className='grid grid-rows-[1fr_auto] content-start justify-items-center gap-4 bg-indigo-50/40 p-4'>
@@ -30,11 +28,6 @@ const Sidebar = () => {
 			</div>
 			<div className='space-y-4'>
 				<LogoutIconButton onClick={() => signOut()} />
-				<UserAvatar
-					email={data?.user?.email}
-					name={data?.user?.name}
-					imageUrl={data?.user?.image}
-				/>
 			</div>
 		</nav>
 	);
