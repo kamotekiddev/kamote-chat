@@ -5,7 +5,7 @@ interface Props {
 }
 const ChatLayout = ({ children }: Props) => {
 	return (
-		<main className='grid h-screen grid-cols-[70px_auto]'>
+		<main className='grid h-screen grid-cols-[200px_auto]'>
 			<Sidebar />
 			{children}
 		</main>
