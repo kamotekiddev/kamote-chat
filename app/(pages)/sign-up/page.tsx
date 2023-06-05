@@ -66,6 +66,7 @@ export default function SignUp() {
 						type='email'
 						name='email'
 						required
+						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 					/>
 					<Input
@@ -73,7 +74,8 @@ export default function SignUp() {
 						type='text'
 						name='name'
 						required
-						onChange={(e) => setEmail(e.target.value)}
+						value={name}
+						onChange={(e) => setName(e.target.value)}
 					/>
 					<div>
 						<div className='flex items-center justify-between'>
@@ -96,7 +98,8 @@ export default function SignUp() {
 							type='text'
 							name='name'
 							required
-							onChange={(e) => setEmail(e.target.value)}
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
 						/>
 					</div>
 					{isError && (
