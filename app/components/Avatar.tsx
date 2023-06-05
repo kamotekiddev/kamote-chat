@@ -8,7 +8,7 @@ interface Props {
 }
 const Avatar = ({ user }: Props) => {
 	return (
-		<div className='relative'>
+		<div className='relative h-7 w-7'>
 			<Image src={user?.image || userNoPofile} fill alt='Avatar Image' />
 		</div>
 	);

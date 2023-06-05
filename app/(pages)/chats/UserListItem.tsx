@@ -1,3 +1,4 @@
+import Avatar from '@/components/Avatar';
 import { User } from '@prisma/client';
 
 interface Props {
@@ -9,9 +10,10 @@ const UserListItem = ({ user, onSelectFriend }: Props) => {
 	return (
 		<button
 			onClick={() => onSelectFriend(user)}
-			className='block w-full rounded-lg p-2 px-4 text-left hover:bg-indigo-50'
+			className='flex w-full items-center gap-4 rounded-lg p-2 text-left hover:bg-neutral-100'
 		>
-			<h1 className='prose-md font-medium'>{user.name}</h1>
+			<Avatar user={user} />
+			<h1 className='prose-sm'>{user.name}</h1>
 		</button>
 	);
 };

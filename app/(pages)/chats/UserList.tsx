@@ -3,7 +3,6 @@
 import { FiUsers } from 'react-icons/fi';
 import { useRouter } from 'next/navigation';
 
-import { friends } from '@/data/friends';
 import UserListItem from './UserListItem';
 import { User } from '@prisma/client';
 
