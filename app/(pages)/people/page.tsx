@@ -1,7 +1,7 @@
-import React from 'react';
+import EmptyState from '@/components/EmptyState';
 
 const People = () => {
-	return <div>Users Page</div>;
+	return <EmptyState />;
 };
 
 export default People;
