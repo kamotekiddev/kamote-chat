@@ -25,7 +25,7 @@ const UserList = ({ users }: Props) => {
 
 	return (
 		<div className='w-full bg-indigo-50/10 p-4'>
-			<header className='flex items-center justify-between px-4'>
+			<header className='px-2'>
 				<h1 className='prose-lg font-bold'>People</h1>
 			</header>
 			<div className='mt-5 space-y-2'>
