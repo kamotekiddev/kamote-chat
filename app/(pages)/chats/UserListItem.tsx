@@ -3,13 +3,13 @@ import { User } from '@prisma/client';
 
 interface Props {
 	user: User;
-	onSelectFriend: (fried: User) => void;
+	onSelect: (fried: User) => void;
 }
 
-const UserListItem = ({ user, onSelectFriend }: Props) => {
+const UserListItem = ({ user, onSelect }: Props) => {
 	return (
 		<button
-			onClick={() => onSelectFriend(user)}
+			onClick={() => onSelect(user)}
 			className='flex w-full items-center gap-4 rounded-lg p-2 text-left hover:bg-neutral-100'
 		>
 			<Avatar user={user} />

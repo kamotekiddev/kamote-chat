@@ -10,8 +10,16 @@ interface Props {
 }
 const UserList = ({ users }: Props) => {
 	const router = useRouter();
-	const handleSelectFriend = (friend: User) =>
-		router.push(`/chats/${friend.id}`);
+
+	const handleSelect = async (user: User) => {
+		const response = await fetch('/api/conversations', {
+			method: 'POST',
+			body: JSON.stringify({ userId: user?.id }),
+		});
+		const data = await response.json();
+		if (!data) return null;
+		router.push(`/chats/${user.id}`);
+	};
 
 	if (!users?.length) return null;
 
@@ -22,11 +30,7 @@ const UserList = ({ users }: Props) => {
 			</header>
 			<div className='mt-5 space-y-2'>
 				{users.map((user) => (
-					<UserListItem
-						key={user.id}
-						user={user}
-						onSelectFriend={handleSelectFriend}
-					/>
+					<UserListItem key={user.id} user={user} onSelect={handleSelect} />
 				))}
 			</div>
 		</div>
