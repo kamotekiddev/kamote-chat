@@ -1,7 +1,7 @@
 import React from 'react';
 
 const People = () => {
-	return <div>Friends</div>;
+	return <div>Users Page</div>;
 };
 
 export default People;
