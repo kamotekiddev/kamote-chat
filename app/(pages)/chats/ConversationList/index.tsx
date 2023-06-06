@@ -1,5 +1,5 @@
 'use client';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { Conversation, User, Message } from '@prisma/client';
 import ConversationListItem from './ConversationListItem';
 
@@ -17,6 +17,12 @@ interface Props {
 }
 const ConversationList = ({ conversations }: Props) => {
 	const { chatId } = useParams();
+	const router = useRouter();
+
+	const handleSelectConversation = (id: string) => {
+		console.log(id);
+		router.push(`/chats/${id}`);
+	};
 
 	return (
 		<div className='w-full bg-indigo-50/10 p-4'>
@@ -26,9 +32,10 @@ const ConversationList = ({ conversations }: Props) => {
 			<div>
 				{conversations?.map((conversation) => (
 					<ConversationListItem
-						key={conversation?.id}
+						key={conversation.id}
 						conversation={conversation}
-						isActive={chatId === conversation?.id}
+						isActive={chatId === conversation.id}
+						onSelect={handleSelectConversation}
 					/>
 				))}
 			</div>
