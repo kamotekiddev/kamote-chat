@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 
 import UserListItem from './UserListItem';
-import { User } from '@prisma/client';
+import { Conversation, User } from '@prisma/client';
 
 interface Props {
 	users?: User[];
@@ -16,9 +16,9 @@ const UserList = ({ users }: Props) => {
 			method: 'POST',
 			body: JSON.stringify({ userId: user?.id }),
 		});
-		const data = await response.json();
+		const data: Conversation = await response.json();
 		if (!data) return null;
-		router.push(`/chats/${user.id}`);
+		router.push(`/chats/${data?.id}`);
 	};
 
 	if (!users?.length) return null;

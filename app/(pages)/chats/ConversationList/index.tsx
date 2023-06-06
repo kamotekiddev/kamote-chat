@@ -1,3 +1,5 @@
+'use client';
+import { useParams } from 'next/navigation';
 import { Conversation, User, Message } from '@prisma/client';
 import ConversationListItem from './ConversationListItem';
 
@@ -14,6 +16,8 @@ interface Props {
 	conversations?: FullConversation[];
 }
 const ConversationList = ({ conversations }: Props) => {
+	const { chatId } = useParams();
+
 	return (
 		<div className='w-full bg-indigo-50/10 p-4'>
 			<header className='mb-5 px-2'>
@@ -24,6 +28,7 @@ const ConversationList = ({ conversations }: Props) => {
 					<ConversationListItem
 						key={conversation?.id}
 						conversation={conversation}
+						isActive={chatId === conversation?.id}
 					/>
 				))}
 			</div>
