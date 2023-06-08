@@ -19,10 +19,7 @@ const ConversationList = ({ conversations }: Props) => {
 	const { chatId } = useParams();
 	const router = useRouter();
 
-	const handleSelectConversation = (id: string) => {
-		console.log(id);
-		router.push(`/chats/${id}`);
-	};
+	const handleSelectConversation = (id: string) => router.push(`/chats/${id}`);
 
 	return (
 		<div className='w-full bg-indigo-50/10 p-4'>
