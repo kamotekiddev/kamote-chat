@@ -2,11 +2,19 @@
 
 import { FormEvent, useState } from 'react';
 
-const TypingBox = () => {
+interface Props {
+	conversationId: string;
+}
+
+const TypingBox = ({ conversationId }: Props) => {
 	const [text, setText] = useState('');
 
-	const handleSend = (e: FormEvent) => {
+	const handleSend = async (e: FormEvent) => {
 		e.preventDefault();
+		await fetch('/api/messages', {
+			method: 'POST',
+			body: JSON.stringify({ message: text, conversationId }),
+		});
 		setText('');
 	};
 

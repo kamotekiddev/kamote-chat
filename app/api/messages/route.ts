@@ -1,0 +1,42 @@
+import { NextResponse } from 'next/server';
+import getCurrentUser from '@/libs/getCurrentUser';
+import client from '@/libs/prismadb';
+
+export async function POST(request: Request) {
+	try {
+		const body = await request.json();
+		const { message, image, conversationId } = body;
+		const currentUser = await getCurrentUser();
+
+		if (!currentUser?.id || !currentUser?.email)
+			return new NextResponse('Unauthorized', { status: 401 });
+
+		const newMessage = await client.message.create({
+			data: {
+				body: message,
+				image,
+				conversation: {
+					connect: { id: conversationId },
+				},
+				sender: { connect: { id: currentUser.id } },
+				seenByUsers: { connect: { id: currentUser.id } },
+				seenByIds: [currentUser.id],
+			},
+			include: { seenByUsers: true, sender: true },
+		});
+
+		const updateConversation = await client.conversation.update({
+			where: { id: conversationId },
+			data: {
+				lastMessageAt: new Date(),
+				messages: { connect: { id: newMessage.id } },
+			},
+			include: { users: true, messages: { include: { seenByUsers: true } } },
+		});
+
+		return NextResponse.json(newMessage);
+	} catch (error) {
+		console.log(error, 'ERROR_MESSAGES');
+		return new NextResponse('Internal server error', { status: 500 });
+	}
+}
