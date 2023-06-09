@@ -51,13 +51,13 @@ const ConversationListItem = ({ conversation, isActive, onSelect }: Props) => {
 		>
 			<div className='flex items-center gap-4'>
 				<Avatar user={otherUsers[0]} />
-				<div>
+				<div className='w-full text-left'>
 					<div className='flex flex-1 justify-between gap-2'>
 						<h1 className='prose-sm truncate font-medium'>
 							{conversation?.name || otherUsers[0].name}
 						</h1>
 						{lastMessage?.createdAt && (
-							<span className='text-xs text-gray-400'>
+							<span className='flex-shrink-0 text-xs text-gray-400'>
 								{format(new Date(lastMessage?.createdAt), 'p')}
 							</span>
 						)}
