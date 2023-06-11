@@ -51,7 +51,7 @@ const ConversationListItem = ({ conversation, isActive, onSelect }: Props) => {
 		>
 			<div className='flex items-center gap-4'>
 				<Avatar user={otherUsers[0]} />
-				<div className='w-full text-left'>
+				<div className='w-full overflow-hidden text-left'>
 					<div className='flex flex-1 justify-between gap-2'>
 						<h1 className='prose-sm truncate font-medium'>
 							{conversation?.name || otherUsers[0].name}
