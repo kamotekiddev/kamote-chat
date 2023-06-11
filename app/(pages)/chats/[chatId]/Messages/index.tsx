@@ -1,6 +1,7 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
 import { Message, User } from '@prisma/client';
 import MessageBox from './MessageBox';
 import EmptyState from '@/components/EmptyState';
@@ -12,10 +13,15 @@ export interface FullMessage extends Message {
 
 interface Props {
 	initialMessages: FullMessage[];
+	conversationId: string;
 }
-const Messages = ({ initialMessages }: Props) => {
+const Messages = ({ initialMessages, conversationId }: Props) => {
 	const [messages, setMessages] = useState<FullMessage[]>(initialMessages);
 	const bottomRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		axios.post(`/api/conversations/${conversationId}/seen`);
+	}, [conversationId]);
 
 	if (!messages.length)
 		return (

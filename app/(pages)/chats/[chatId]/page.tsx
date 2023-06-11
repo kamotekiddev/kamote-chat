@@ -20,7 +20,7 @@ const Chat = async ({ params: { chatId } }: Props) => {
 	return (
 		<div className='grid h-full grid-rows-[auto_1fr_auto] gap-5'>
 			<ChatHeader conversation={conversation} />
-			<Messages initialMessages={messages} />
+			<Messages initialMessages={messages} conversationId={chatId} />
 			<TypingBox key={chatId} conversationId={chatId} />
 		</div>
 	);
