@@ -16,7 +16,7 @@ interface Props {
 
 interface FieldValues {
 	name: string;
-	members: { id: string; name: string }[];
+	members: string[];
 }
 
 const CreateGroupChatModal = ({ onClose, users, ...props }: Props) => {

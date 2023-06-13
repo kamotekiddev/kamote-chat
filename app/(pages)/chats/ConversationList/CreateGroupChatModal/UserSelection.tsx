@@ -1,13 +1,14 @@
 import { Combobox, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 import { FiChevronDown } from 'react-icons/fi';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
 	label: string;
 	name: string;
 	users: { name: string; id: string }[];
-	selectedUsers: { name: string; id: string }[];
-	onChange: (members: { name: string; id: string }[]) => void;
+	selectedUsers: string[];
+	onChange: (members: string[]) => void;
 }
 const UserSelection = ({
 	label,
@@ -18,7 +19,7 @@ const UserSelection = ({
 }: Props) => {
 	const [query, setQuery] = useState('');
 
-	const filteredOptions = !query
+	const filteredUsers = !query
 		? users
 		: users.filter((user) =>
 				user.name
@@ -40,15 +41,18 @@ const UserSelection = ({
 
 			<Combobox
 				multiple
-				value={users}
-				onChange={(newValue) => onChange(newValue)}
+				value={selectedUsers}
+				onChange={(newValue) => onChange([...newValue])}
 			>
 				<div className='relative mt-1'>
-					<div className='relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm'>
+					<div className='5 relative w-full cursor-default overflow-hidden rounded-md border-[2px] border-gray-300 bg-white text-left focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 '>
 						<Combobox.Input
-							className='w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0'
-							displayValue={(users: { id: string; name: string }[]) =>
-								users.map((user) => user.name).join(', ')
+							className='w-full border-none py-1.5 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0'
+							displayValue={() =>
+								users
+									.filter((user) => selectedUsers.includes(user.id))
+									.map((user) => user.name.split(' ')[0])
+									.join(', ')
 							}
 							onChange={(event) => setQuery(event.target.value)}
 						/>
@@ -67,25 +71,32 @@ const UserSelection = ({
 						afterLeave={() => setQuery('')}
 					>
 						<Combobox.Options className='absolute z-[1000] mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
-							{filteredOptions.length === 0 && query !== '' ? (
+							{!filteredUsers.length && query ? (
 								<div className='relative cursor-default select-none px-4 py-2 text-gray-700'>
 									Nothing found.
 								</div>
 							) : (
-								filteredOptions.map((option) => (
+								filteredUsers.map((filteredUser) => (
 									<Combobox.Option
-										disabled={selectedUsers.some(
-											(user) => user.id === option.id
+										key={filteredUser.id}
+										className={twMerge(
+											`relative cursor-pointer select-none py-2 pl-10 pr-4`,
+											selectedUsers.includes(filteredUser.id) &&
+												'bg-indigo-600 text-white'
 										)}
-										key={option.id}
-										className={({ active }) =>
-											`relative cursor-default select-none py-2 pl-10 pr-4 ${
-												active ? 'bg-teal-600 text-white' : 'text-gray-900'
-											}`
-										}
-										value={option}
+										value={filteredUser.id}
+										onClick={() => {
+											selectedUsers.includes(filteredUser.id) &&
+												onChange(
+													selectedUsers.filter(
+														(selectedUser) => selectedUser !== filteredUser.id
+													)
+												);
+
+											console.log(selectedUsers.includes(filteredUser.id));
+										}}
 									>
-										{option.name}
+										{filteredUser.name}
 									</Combobox.Option>
 								))
 							)}
