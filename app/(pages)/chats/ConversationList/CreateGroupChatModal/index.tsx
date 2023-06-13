@@ -74,8 +74,18 @@ const CreateGroupChatModal = ({ onClose, users, ...props }: Props) => {
 					/>
 				</div>
 				<footer className='mt-4 flex justify-between gap-4'>
-					<button onClick={onClose}>Cancel</button>
-					<button type='submit'>Create</button>
+					<button
+						onClick={onClose}
+						className='flex justify-center rounded-md bg-indigo-50 px-3 py-1.5 text-sm font-semibold leading-6 text-indigo-600 shadow-sm hover:bg-indigo-400 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+					>
+						Cancel
+					</button>
+					<button
+						type='submit'
+						className='flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+					>
+						Create
+					</button>
 				</footer>
 			</form>
 		</Modal>
