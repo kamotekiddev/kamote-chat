@@ -70,7 +70,7 @@ const UserSelection = ({
 						leaveTo='opacity-0'
 						afterLeave={() => setQuery('')}
 					>
-						<Combobox.Options className='absolute z-[1000] mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-2 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+						<Combobox.Options className='absolute z-[1000] mt-1 max-h-60 w-full overflow-auto rounded-md bg-white px-1 py-2 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
 							{!filteredUsers.length && query ? (
 								<div className='relative cursor-default select-none px-4 py-2 text-gray-700'>
 									Nothing found.
@@ -85,16 +85,14 @@ const UserSelection = ({
 												'bg-indigo-600 text-white'
 										)}
 										value={filteredUser.id}
-										onClick={() => {
+										onClick={() =>
 											selectedUsers.includes(filteredUser.id) &&
-												onChange(
-													selectedUsers.filter(
-														(selectedUser) => selectedUser !== filteredUser.id
-													)
-												);
-
-											console.log(selectedUsers.includes(filteredUser.id));
-										}}
+											onChange(
+												selectedUsers.filter(
+													(selectedUser) => selectedUser !== filteredUser.id
+												)
+											)
+										}
 									>
 										{filteredUser.name}
 									</Combobox.Option>
