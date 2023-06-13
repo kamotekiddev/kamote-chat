@@ -58,7 +58,7 @@ const Modal = ({ isOpen, onClose, children, size }: Props) => {
 							>
 								<Dialog.Panel
 									className={twMerge(
-										'w-full transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all',
+										'w-full transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all',
 										getSizeStyle(size)
 									)}
 								>
