@@ -1,29 +1,29 @@
-import bcrypt from 'bcrypt';
-import { NextResponse } from 'next/server';
+import bcrypt from "bcrypt";
+import { NextResponse } from "next/server";
 
-import client from '@/libs/prismadb';
+import client from "@/libs/prismadb";
 
 export async function POST(request: Request) {
-	try {
-		const body = await request.json();
-		const { email, name, password } = body;
+  try {
+    const body = await request.json();
+    const { email, name, password } = body;
 
-		if (!email || !name || !password)
-			return new NextResponse('Missing Information', { status: 400 });
+    if (!email || !name || !password)
+      return new NextResponse("Missing Information", { status: 400 });
 
-		const foundUser = await client.user.findUnique({ where: { email } });
-		if (foundUser?.id)
-			return new NextResponse('Email Address already been taken', {
-				status: 400,
-			});
+    const foundUser = await client.user.findUnique({ where: { email } });
+    if (foundUser?.id)
+      return new NextResponse("Email Address already been taken", {
+        status: 400,
+      });
 
-		const hashedPassword = await bcrypt.hash(password, 12);
-		const user = await client.user.create({
-			data: { email, name, hashedPassword },
-		});
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const user = await client.user.create({
+      data: { email, name, hashedPassword },
+    });
 
-		return NextResponse.json(user);
-	} catch (error) {
-		return new NextResponse('Internal Server Error', { status: 500 });
-	}
+    return NextResponse.json(user);
+  } catch (error) {
+    return new NextResponse("Internal Server Error", { status: 500 });
+  }
 }
