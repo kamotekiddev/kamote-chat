@@ -4,23 +4,23 @@ import Image from "next/image";
 import userNoProfile from "@/assets/userNoProfile.png";
 
 interface Props {
-   users: User[];
+  users: User[];
 }
 const AvatarGroup = ({ users }: Props) => {
-   const slicedUsers = users.slice(0, 3);
+  const slicedUsers = users.slice(0, 3);
 
-   const positionMap: { [key: number]: string } = {
-      0: "top-0 left-[12px]",
-      1: "bottom-0",
-      2: "bottom-0 right-0",
-   };
+  const positionMap: { [key: number]: string } = {
+    0: "top-0 left-[12px]",
+    1: "bottom-0",
+    2: "bottom-0 right-0",
+  };
 
-   return (
-      <div className="relative h-11 w-11">
-         {slicedUsers.map((user, index) => (
-            <div
-               key={user.id}
-               className={`
+  return (
+    <div className="relative h-11 w-11">
+      {slicedUsers.map((user, index) => (
+        <div
+          key={user.id}
+          className={`
             absolute
             inline-block 
             h-[21px] 
@@ -29,12 +29,12 @@ const AvatarGroup = ({ users }: Props) => {
             rounded-full
             ${positionMap[index]}
           `}
-            >
-               <Image fill src={user?.image || userNoProfile} alt="Avatar" />
-            </div>
-         ))}
-      </div>
-   );
+        >
+          <Image fill src={user?.image || userNoProfile} alt="Avatar" />
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default AvatarGroup;
