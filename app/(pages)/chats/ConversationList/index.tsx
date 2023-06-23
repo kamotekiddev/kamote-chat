@@ -55,21 +55,29 @@ const ConversationList = ({ initialConversations, users }: Props) => {
          );
       };
 
+      const removeConversationHandler = (conversation: FullConversation) => {
+         setConversations((current) => current.filter((convo) => convo.id !== conversation.id));
+
+         if (chatId === conversation.id) router.push("/chats");
+      };
+
       pusherClient.bind("conversation:new", newConversationHandler);
       pusherClient.bind("conversation:update", updateConversationHandler);
+      pusherClient.bind("conversation:remove", removeConversationHandler);
 
       return () => {
          pusherClient.unbind("conversation:new", newConversationHandler);
          pusherClient.unbind("conversation:update", updateConversationHandler);
+         pusherClient.unbind("conversation:remove", removeConversationHandler);
       };
-   }, [data?.user?.email]);
+   }, [data?.user?.email, chatId, router]);
 
    const handleSelectConversation = (id: string) => router.push(`/chats/${id}`);
 
    return (
       <>
-         <div className="grid-rows-[auto 1fr] grid w-full overflow-hidden bg-indigo-50/10 p-4">
-            <header className="mb-5 flex justify-between gap-4 px-2">
+         <div className="grid w-full grid-rows-[auto_1fr] gap-4 overflow-hidden bg-indigo-50/10 p-4">
+            <header className="flex justify-between gap-4 px-2">
                <h1 className="prose-lg font-bold">Messages</h1>
                <button
                   onClick={() => setModalOpen(true)}
