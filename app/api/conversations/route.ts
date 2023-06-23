@@ -20,12 +20,10 @@ export async function POST(request: Request) {
             data: {
                name,
                isGroup,
-               userIds: [
-                  currentuser?.id,
-                  ...members?.map((member: string) => member),
-               ],
+               userIds: [currentuser?.id, ...members?.map((member: string) => member)],
                users: {
                   connect: [
+                     { id: currentuser?.id },
                      ...members.map((member: string) => ({ id: member })),
                   ],
                },
@@ -34,12 +32,7 @@ export async function POST(request: Request) {
          });
 
          newConversation.users.forEach((user) => {
-            if (user.email)
-               pusherServer.trigger(
-                  user.email,
-                  "conversation:new",
-                  newConversation
-               );
+            if (user.email) pusherServer.trigger(user.email, "conversation:new", newConversation);
          });
 
          return NextResponse.json(newConversation);
@@ -51,8 +44,7 @@ export async function POST(request: Request) {
          },
       });
 
-      if (existingConversations.length > 0)
-         return NextResponse.json(existingConversations[0]);
+      if (existingConversations.length > 0) return NextResponse.json(existingConversations[0]);
 
       const newConversation = await client.conversation.create({
          data: {
@@ -65,12 +57,7 @@ export async function POST(request: Request) {
       });
 
       newConversation.users.forEach((user) => {
-         if (user.email)
-            pusherServer.trigger(
-               user.email,
-               "conversation:new",
-               newConversation
-            );
+         if (user.email) pusherServer.trigger(user.email, "conversation:new", newConversation);
       });
 
       return NextResponse.json(newConversation);
