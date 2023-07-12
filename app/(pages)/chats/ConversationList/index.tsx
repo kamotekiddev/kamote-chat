@@ -24,7 +24,6 @@ interface Props {
   initialConversations?: FullConversation[];
   users: User[];
 }
-// TODO add empty state or not render a component if there is no data yet.
 const ConversationList = ({ initialConversations, users }: Props) => {
   const router = useRouter();
   const [conversations, setConversations] = useState<FullConversation[]>(
@@ -91,7 +90,7 @@ const ConversationList = ({ initialConversations, users }: Props) => {
   return (
     <>
       {isLoading && <Loading />}
-      <div className="grid w-full grid-rows-[auto_1fr] gap-4 overflow-hidden bg-indigo-50/10 p-4">
+      <div className="grid w-full grid-rows-[auto_1fr] gap-4 overflow-hidden bg-indigo-50/60 p-4">
         <header className="flex justify-between gap-4 px-2">
           <h1 className="prose-lg font-bold">Messages</h1>
           <button
@@ -101,6 +100,9 @@ const ConversationList = ({ initialConversations, users }: Props) => {
             <FiUserPlus />
           </button>
         </header>
+        {!conversations.length && (
+          <div className="px-2">No conversations yet.</div>
+        )}
         <div className="h-full overflow-auto scrollbar-hide">
           {conversations?.map((conversation) => (
             <ConversationListItem

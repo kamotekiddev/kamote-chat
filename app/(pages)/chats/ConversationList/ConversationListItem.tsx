@@ -45,8 +45,8 @@ const ConversationListItem = ({ conversation, isActive, onSelect }: Props) => {
   return (
     <button
       className={twMerge(
-        "w-full rounded-lg p-3 transition hover:bg-neutral-100",
-        isActive && "bg-neutral-100"
+        "w-full rounded-lg p-3 transition hover:bg-white",
+        isActive && "bg-white"
       )}
       onClick={() => onSelect && onSelect(conversation.id)}
     >
