@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ComponentProps } from "react";
+import { ComponentProps } from "react";
 import { FiLogOut } from "react-icons/fi";
 
 const LogoutIconButton = ({ ...props }: ComponentProps<"button">) => {
