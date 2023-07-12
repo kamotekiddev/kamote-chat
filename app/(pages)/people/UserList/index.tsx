@@ -10,7 +10,6 @@ import UserListItem from "./UserListItem";
 interface Props {
   users?: User[];
 }
-// TODO add empty state if no user to message
 
 const UserList = ({ users }: Props) => {
   const router = useRouter();
@@ -28,17 +27,16 @@ const UserList = ({ users }: Props) => {
     router.push(`/chats/${data?.id}`);
   };
 
-  if (!users?.length) return null;
-
   return (
     <>
       {isLoading && <LoadingModal />}
-      <div className="w-full bg-indigo-50/10 p-4">
+      <div className="w-full bg-indigo-50/60 p-4">
         <header className="px-2">
           <h1 className="prose-lg font-bold">People</h1>
         </header>
+        {!users?.length && <div className="px-2">No users yet.</div>}
         <div className="mt-5 space-y-2">
-          {users.map((user) => (
+          {users?.map((user) => (
             <UserListItem key={user.id} user={user} onSelect={handleSelect} />
           ))}
         </div>

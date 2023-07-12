@@ -10,7 +10,7 @@ const UserListItem = ({ user, onSelect }: Props) => {
   return (
     <button
       onClick={() => onSelect(user)}
-      className="flex w-full items-center gap-4 rounded-lg p-2 text-left hover:bg-neutral-100"
+      className="flex w-full items-center gap-4 rounded-lg p-2 text-left hover:bg-white"
     >
       <Avatar user={user} />
       <h1 className="prose-sm">{user.name}</h1>
