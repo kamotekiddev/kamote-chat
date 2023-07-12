@@ -9,6 +9,7 @@ import { pusherClient } from "@/libs/pusher";
 import { Conversation, User, Message } from "@prisma/client";
 import ConversationListItem from "./ConversationListItem";
 import CreateGroupChatModal from "./CreateGroupChatModal";
+import Loading from "../loading";
 
 interface FullMessageType extends Message {
   sender: User;
@@ -28,6 +29,8 @@ const ConversationList = ({ initialConversations, users }: Props) => {
   const [conversations, setConversations] = useState<FullConversation[]>(
     initialConversations || []
   );
+  const [isLoading, setLoading] = useState(false);
+
   const { chatId } = useParams();
   const [isModalOpen, setModalOpen] = useState(false);
   const { data } = useSession();
@@ -74,10 +77,15 @@ const ConversationList = ({ initialConversations, users }: Props) => {
     };
   }, [data?.user?.email, chatId, router]);
 
-  const handleSelectConversation = (id: string) => router.push(`/chats/${id}`);
+  const handleSelectConversation = (id: string) => {
+    setLoading(true);
+    router.push(`/chats/${id}`);
+    setLoading(false);
+  };
 
   return (
     <>
+      {isLoading && <Loading />}
       <div className="grid w-full grid-rows-[auto_1fr] gap-4 overflow-hidden bg-indigo-50/10 p-4">
         <header className="flex justify-between gap-4 px-2">
           <h1 className="prose-lg font-bold">Messages</h1>
