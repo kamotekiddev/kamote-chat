@@ -1,5 +1,4 @@
 import EmptyState from "@/components/EmptyState";
-import getUsers from "@/libs/getUsers";
 
 const Chats = () => {
   return (
