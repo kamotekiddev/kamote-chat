@@ -1,12 +1,12 @@
 "use client";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { FormEvent, useState } from "react";
 
 import { User } from "@prisma/client";
 import Modal from "@/components/Modal";
-
 import Input from "@/components/Input";
 import UserSelection from "./UserSelection";
+import _ from "lodash";
 
 interface Props {
   isOpen: boolean;
@@ -16,24 +16,47 @@ interface Props {
 
 interface FieldValues {
   name: string;
-  members: string[];
+  members: User[];
 }
 
 const CreateGroupChatModal = ({ onClose, users, ...props }: Props) => {
   const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState();
+  const [error, setError] = useState("");
   const [data, setData] = useState<FieldValues>({ name: "", members: [] });
+
+  const handleSelectUser = (user: User) => {
+    if (_.some(data.members, { id: user.id })) return null;
+    setData((prevData) => ({
+      ...prevData,
+      members: [...prevData.members, user],
+    }));
+  };
+
+  const handleRemoveSelectedUser = (user: User) => {
+    setData((prevData) => ({
+      ...prevData,
+      members: prevData.members.filter((member) => member.id !== user.id),
+    }));
+  };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    setError("");
     setLoading(true);
     axios
       .post("/api/conversations", {
         ...data,
+        members: data.members.map((member) => member.id),
         isGroup: true,
       })
-      .then(({ data }) => onClose())
-      .catch((err) => setError(err))
+      .then(() => onClose())
+      .catch((err: AxiosError) =>
+        setError(
+          (err?.response?.data as string) ||
+            err?.message ||
+            "Internal Server Error"
+        )
+      )
       .finally(() => setLoading(false));
   };
 
@@ -58,21 +81,17 @@ const CreateGroupChatModal = ({ onClose, users, ...props }: Props) => {
             label="Group Name"
           />
           <UserSelection
-            name="users"
+            users={users}
             selectedUsers={data.members}
-            label="Users"
-            users={users.map(({ id, name }) => ({
-              id,
-              name: name as string,
-            }))}
-            onChange={(members) =>
-              setData((prevData) => ({
-                ...prevData,
-                members,
-              }))
-            }
+            onSelect={handleSelectUser}
+            onRemove={handleRemoveSelectedUser}
           />
         </div>
+        {error && (
+          <div className="mt-4 rounded-lg bg-rose-50 p-2 px-4 text-rose-500">
+            {error}
+          </div>
+        )}
         <footer className="mt-4 flex justify-between gap-4">
           <button
             onClick={onClose}

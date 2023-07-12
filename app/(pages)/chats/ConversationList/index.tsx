@@ -24,6 +24,7 @@ interface Props {
   initialConversations?: FullConversation[];
   users: User[];
 }
+// TODO add empty state or not render a component if there is no data yet.
 const ConversationList = ({ initialConversations, users }: Props) => {
   const router = useRouter();
   const [conversations, setConversations] = useState<FullConversation[]>(
