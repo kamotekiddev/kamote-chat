@@ -9,7 +9,8 @@ const ChatLayout = async ({ children }: Props) => {
   const users = await getUsers();
 
   return (
-    <main className="grid h-screen grid-cols-[200px_300px_auto]">
+    <main className="grid h-screen grid-cols-[280px_300px_auto]">
+      {/* @ts-expect-error Server Component */}
       <Sidebar />
       <UserList users={users} />
       {children}
