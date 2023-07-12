@@ -80,6 +80,10 @@ const ConversationList = ({ initialConversations, users }: Props) => {
   const handleSelectConversation = (id: string) => {
     setLoading(true);
     router.push(`/chats/${id}`);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
     setLoading(false);
   };
 
