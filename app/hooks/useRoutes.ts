@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { signOut } from "next-auth/react";
-import { FaComment, FaSignOutAlt, FaUsers } from "react-icons/fa";
+import { FaComment, FaUsers } from "react-icons/fa";
 import { useParams, usePathname } from "next/navigation";
 
 const useRoutes = () => {
@@ -22,12 +21,6 @@ const useRoutes = () => {
         icon: FaUsers,
         href: "/people",
         isActive: pathname === "/people",
-      },
-      {
-        label: "Logout",
-        icon: FaSignOutAlt,
-        href: "#",
-        onClick: () => signOut(),
       },
     ],
     [pathname, params]
