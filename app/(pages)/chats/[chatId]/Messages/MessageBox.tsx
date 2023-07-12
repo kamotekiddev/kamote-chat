@@ -36,7 +36,7 @@ const MessageBox = ({ message, isLast }: Props) => {
           <div
             className={twMerge(
               "w-fit max-w-md rounded-lg bg-gray-100 p-2 px-4",
-              isOwnMessage && "bg-sky-500 text-white"
+              isOwnMessage && "bg-indigo-600 text-white"
             )}
           >
             {message.body}
