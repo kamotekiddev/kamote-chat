@@ -7,7 +7,6 @@ import { Menu, Transition } from "@headlessui/react";
 
 import useOtherUsers from "@/hooks/useOtherUsers";
 import Avatar from "@/components/Avatar";
-import axios from "axios";
 import DeleteConversationModal from "./DeleteConversationModal";
 
 interface Props {
