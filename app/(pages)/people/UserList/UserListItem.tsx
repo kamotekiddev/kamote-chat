@@ -1,5 +1,5 @@
-import Avatar from "@/components/Avatar";
 import { User } from "@prisma/client";
+import Avatar from "@/components/Avatar";
 
 interface Props {
   user: User;
