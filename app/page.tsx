@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import Image from "next/image";
 
 import Input from "@/components/Input";
@@ -35,8 +36,34 @@ export default function SignIn() {
       callbackUrl: "/chats",
     })
       .then((response) => {
-        if (response?.error) setError(response.error);
+        if (!response?.ok && response?.error) setError(response.error);
         router.replace(response?.url as string);
+      })
+      .catch((error) => {
+        setError("Internal Server Error");
+      })
+      .finally(() => setSubmiting(false));
+  };
+
+  const handleSignInWithGithub = () => {
+    signIn("github", { redirect: false, callbackUrl: "/chats" })
+      .then((response) => {
+        if (!response?.ok && response?.error) setError(response.error);
+        console.log(response?.url);
+        // router.replace(response?.url as string);
+      })
+      .catch((error) => {
+        setError("Internal Server Error");
+      })
+      .finally(() => setSubmiting(false));
+  };
+
+  const handleSignInWithGoogle = () => {
+    signIn("google", { redirect: false, callbackUrl: "/chats" })
+      .then((response) => {
+        if (!response?.ok && response?.error) setError(response.error);
+        console.log(response?.url);
+        // router.replace(response?.url as string);
       })
       .catch((error) => {
         setError("Internal Server Error");
@@ -111,15 +138,38 @@ export default function SignIn() {
             </button>
           </div>
         </form>
-        <p className="mt-10 text-center text-sm text-gray-500">
-          Not a member?
-          <a
-            href="/sign-up"
-            className="ml-2 font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-          >
-            Create Account
-          </a>
-        </p>
+        <div className="my-10">
+          <div className="mb-5 flex items-center gap-4">
+            <hr className="flex-1" />
+            <div className="text-sm">Or Continue With</div>
+            <hr className="flex-1" />
+          </div>
+          <div className="flex gap-4">
+            <button
+              onClick={handleSignInWithGithub}
+              className="flex w-full justify-center rounded-md bg-transparent p-3 text-sm font-semibold leading-6 text-gray-500 ring-1 ring-gray-500 hover:bg-indigo-600 hover:text-white hover:ring-indigo-600"
+            >
+              <FaGithub />
+            </button>
+            <button
+              onClick={handleSignInWithGoogle}
+              className="flex w-full justify-center rounded-md bg-transparent p-3 text-sm font-semibold leading-6 text-gray-500 ring-1 ring-gray-500 hover:bg-indigo-600 hover:text-white hover:ring-indigo-600"
+            >
+              <FaGoogle />
+            </button>
+          </div>
+        </div>
+        <div>
+          <p className="text-center text-sm text-gray-500">
+            Not a member?
+            <a
+              href="/sign-up"
+              className="ml-2 font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+            >
+              Create Account
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
