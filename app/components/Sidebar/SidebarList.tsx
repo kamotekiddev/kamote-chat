@@ -15,7 +15,6 @@ const SidebarList = () => {
           href={route.href}
           icon={route.icon}
           isActive={route?.isActive}
-          onClick={route?.onClick}
         />
       ))}
     </div>

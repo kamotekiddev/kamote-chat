@@ -7,7 +7,7 @@ interface Props {
 const EmptyState = ({ title, message }: Props) => {
   return (
     <main className="grid h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
-      <div className="text-center">
+      <div className="md:items-left flex flex-col items-center text-center">
         <BsChatText className="h-32 w-32 text-gray-900" />
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
           {title || "No Open Coversation"}

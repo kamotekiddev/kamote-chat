@@ -1,14 +1,20 @@
+import { ReactNode } from "react";
 import getCurrentUser from "@/libs/getCurrentUser";
-import SidebarList from "./SidebarList";
-import UserButton from "../UserButton";
+import DesktopSidebar from "./DesktopSidebar";
+import MobileFooter from "./MobileFooter";
 
-const Sidebar = async () => {
+interface Props {
+  children: ReactNode;
+}
+const Sidebar = async ({ children }: Props) => {
   const user = await getCurrentUser();
+
   return (
-    <nav className="grid w-full grid-rows-[1fr_auto] content-start gap-4 bg-indigo-50/40 p-4">
-      <SidebarList />
-      <UserButton user={user} />
-    </nav>
+    <div className="grid h-full grid-rows-[1fr_auto] lg:grid-cols-[270px_300px_1fr]">
+      <DesktopSidebar user={user} />
+      {children}
+      <MobileFooter user={user} />
+    </div>
   );
 };
 

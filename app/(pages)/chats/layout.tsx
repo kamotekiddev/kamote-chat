@@ -3,6 +3,7 @@ import getUsers from "@/libs/getUsers";
 
 import Sidebar from "@/components/Sidebar";
 import ConversationList from "./ConversationList";
+import MobileFooter from "@/components/Sidebar/MobileFooter";
 
 interface Props {
   children: React.ReactNode;
@@ -12,12 +13,13 @@ const ChatLayout = async ({ children }: Props) => {
   const users = await getUsers();
 
   return (
-    <main className="grid h-screen grid-cols-[280px_300px_auto]">
+    <div className="h-screen">
       {/* @ts-expect-error Server Component */}
-      <Sidebar />
-      <ConversationList initialConversations={conversations} users={users} />
-      {children}
-    </main>
+      <Sidebar>
+        <ConversationList initialConversations={conversations} users={users} />
+        {children}
+      </Sidebar>
+    </div>
   );
 };
 

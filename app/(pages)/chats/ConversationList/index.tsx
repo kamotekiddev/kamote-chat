@@ -90,7 +90,7 @@ const ConversationList = ({ initialConversations, users }: Props) => {
   return (
     <>
       {isLoading && <Loading />}
-      <div className="grid w-full grid-rows-[auto_1fr] gap-4 overflow-hidden bg-indigo-50/60 p-4">
+      <div className="hidden w-full grid-rows-[auto_1fr] gap-4 overflow-hidden bg-indigo-50/60 p-4 md:grid">
         <header className="flex justify-between gap-4 px-2">
           <h1 className="prose-lg font-bold">Messages</h1>
           <button
