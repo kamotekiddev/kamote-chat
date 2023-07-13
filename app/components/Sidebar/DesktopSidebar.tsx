@@ -8,7 +8,7 @@ interface Props {
 
 const DesktopSidebar = ({ user }: Props) => {
   return (
-    <nav className="hidden w-full grid-rows-[1fr_auto] content-start gap-4 bg-indigo-50/40 p-4 md:grid">
+    <nav className="hidden w-full grid-rows-[1fr_auto] content-start gap-4 bg-indigo-50/40 p-4 lg:grid">
       <SidebarList />
       <UserButton user={user} />
     </nav>

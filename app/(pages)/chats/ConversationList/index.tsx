@@ -1,7 +1,7 @@
 "use client";
 import _ from "lodash";
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { FiUserPlus } from "react-icons/fi";
 import { useSession } from "next-auth/react";
 
@@ -10,6 +10,8 @@ import { Conversation, User, Message } from "@prisma/client";
 import ConversationListItem from "./ConversationListItem";
 import CreateGroupChatModal from "./CreateGroupChatModal";
 import Loading from "../loading";
+import useConversation from "@/hooks/useConversation";
+import { twMerge } from "tailwind-merge";
 
 interface FullMessageType extends Message {
   sender: User;
@@ -26,14 +28,13 @@ interface Props {
 }
 const ConversationList = ({ initialConversations, users }: Props) => {
   const router = useRouter();
+  const { data } = useSession();
   const [conversations, setConversations] = useState<FullConversation[]>(
     initialConversations || []
   );
   const [isLoading, setLoading] = useState(false);
-
-  const { chatId } = useParams();
+  const { chatId, isOpen } = useConversation();
   const [isModalOpen, setModalOpen] = useState(false);
-  const { data } = useSession();
 
   useEffect(() => {
     if (data?.user?.email) pusherClient.subscribe(data?.user?.email!);
@@ -80,17 +81,18 @@ const ConversationList = ({ initialConversations, users }: Props) => {
   const handleSelectConversation = (id: string) => {
     setLoading(true);
     router.push(`/chats/${id}`);
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
     setLoading(false);
   };
 
   return (
     <>
       {isLoading && <Loading />}
-      <div className="hidden w-full grid-rows-[auto_1fr] gap-4 overflow-hidden bg-indigo-50/60 p-4 md:grid">
+      <div
+        className={twMerge(
+          "grid h-full w-full grid-rows-[auto_1fr] gap-4 overflow-hidden bg-indigo-50/60 p-4 lg:grid",
+          isOpen ? "hidden" : "grid"
+        )}
+      >
         <header className="flex justify-between gap-4 px-2">
           <h1 className="prose-lg font-bold">Messages</h1>
           <button

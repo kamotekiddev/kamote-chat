@@ -1,8 +1,14 @@
+"use client";
+
+import { twMerge } from "tailwind-merge";
 import EmptyState from "@/components/EmptyState";
+import useConversation from "@/hooks/useConversation";
 
 const Chats = () => {
+  const { isOpen } = useConversation();
+
   return (
-    <div className="p-4">
+    <div className={twMerge("p-4 lg:block", isOpen ? "block" : "hidden")}>
       <EmptyState />
     </div>
   );

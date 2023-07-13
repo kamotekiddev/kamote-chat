@@ -3,7 +3,6 @@ import getUsers from "@/libs/getUsers";
 
 import Sidebar from "@/components/Sidebar";
 import ConversationList from "./ConversationList";
-import MobileFooter from "@/components/Sidebar/MobileFooter";
 
 interface Props {
   children: React.ReactNode;
