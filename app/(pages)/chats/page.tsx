@@ -8,7 +8,9 @@ const Chats = () => {
   const { isOpen } = useConversation();
 
   return (
-    <div className={twMerge("p-4 lg:block", isOpen ? "block" : "hidden")}>
+    <div
+      className={twMerge("h-full p-4 lg:block", isOpen ? "block" : "hidden")}
+    >
       <EmptyState />
     </div>
   );

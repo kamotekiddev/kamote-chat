@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FiUserPlus } from "react-icons/fi";
 import { useSession } from "next-auth/react";
+import { twMerge } from "tailwind-merge";
 
 import { pusherClient } from "@/libs/pusher";
 import { Conversation, User, Message } from "@prisma/client";
@@ -11,7 +12,6 @@ import ConversationListItem from "./ConversationListItem";
 import CreateGroupChatModal from "./CreateGroupChatModal";
 import Loading from "../loading";
 import useConversation from "@/hooks/useConversation";
-import { twMerge } from "tailwind-merge";
 
 interface FullMessageType extends Message {
   sender: User;
@@ -79,9 +79,7 @@ const ConversationList = ({ initialConversations, users }: Props) => {
   }, [data?.user?.email, chatId, router]);
 
   const handleSelectConversation = (id: string) => {
-    setLoading(true);
     router.push(`/chats/${id}`);
-    setLoading(false);
   };
 
   return (
