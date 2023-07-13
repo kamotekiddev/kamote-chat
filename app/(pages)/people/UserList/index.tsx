@@ -1,11 +1,13 @@
 "use client";
 
+import { twMerge } from "tailwind-merge";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Conversation, User } from "@prisma/client";
 import LoadingModal from "@/components/LoadingModal";
 import UserListItem from "./UserListItem";
+import useConversation from "@/hooks/useConversation";
 
 interface Props {
   users?: User[];
@@ -14,6 +16,7 @@ interface Props {
 const UserList = ({ users }: Props) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
+  const { isOpen } = useConversation();
 
   const handleSelect = async (user: User) => {
     setLoading(true);
@@ -30,7 +33,12 @@ const UserList = ({ users }: Props) => {
   return (
     <>
       {isLoading && <LoadingModal />}
-      <div className="w-full bg-indigo-50/60 p-4">
+      <div
+        className={twMerge(
+          "h-full w-full bg-indigo-50/60 p-4",
+          isOpen ? "hidden" : "block"
+        )}
+      >
         <header className="px-2">
           <h1 className="prose-lg font-bold">People</h1>
         </header>
