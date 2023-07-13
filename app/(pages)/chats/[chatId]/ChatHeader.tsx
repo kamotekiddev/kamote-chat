@@ -1,10 +1,12 @@
 "use client";
 
+import _ from "lodash";
 import { Fragment, useMemo, useState } from "react";
 import { FiMoreHorizontal } from "react-icons/fi";
 import { Conversation, User } from "@prisma/client";
 import { Menu, Transition } from "@headlessui/react";
 
+import useActiveUserList from "@/hooks/useActiveUserList";
 import useOtherUsers from "@/hooks/useOtherUsers";
 import Avatar from "@/components/Avatar";
 import DeleteConversationModal from "./DeleteConversationModal";
@@ -16,11 +18,14 @@ interface Props {
 const ChatHeader = ({ conversation }: Props) => {
   const otherUsers = useOtherUsers(conversation.users);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const { members } = useActiveUserList();
+
+  const isActive = _.includes(members, otherUsers[0]?.email);
 
   const status = useMemo(() => {
     if (conversation.isGroup) return `${conversation.users.length} members`;
-    return "Active";
-  }, [conversation]);
+    return isActive ? "Active" : "Offline";
+  }, [conversation, isActive]);
 
   const handleDeleteConversation = () => setShowDeleteModal(true);
 
