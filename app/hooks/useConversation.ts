@@ -1,12 +1,11 @@
 import { useParams } from "next/navigation";
-import { useState } from "react";
 
 const useConversation = () => {
-  const { chatId } = useParams();
+  const params = useParams();
 
-  const isOpen = !!chatId;
+  const isOpen = !!params?.chatId;
 
-  return { chatId, isOpen };
+  return { chatId: params?.chatId, isOpen };
 };
 
 export default useConversation;
