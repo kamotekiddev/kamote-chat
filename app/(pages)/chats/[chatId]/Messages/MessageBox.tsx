@@ -13,10 +13,10 @@ interface Props {
 
 const MessageBox = ({ message, isLast }: Props) => {
   const session = useSession();
-  const isOwnMessage = session.data?.user?.email === message.sender.email;
+  const isOwnMessage = session.data?.user?.email === message?.sender?.email;
 
   const seenList = (message.seenByUsers || [])
-    .filter((user) => user.email !== message.sender.email)
+    .filter((user) => user.email !== message?.sender?.email)
     .map((user) => user.name?.split(" ")[0])
     .join(", ");
 

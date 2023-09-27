@@ -29,6 +29,13 @@ const Messages = ({ initialMessages, conversationId }: Props) => {
     pusherClient.subscribe(conversationId);
     bottomRef.current?.scrollIntoView();
 
+    /* 
+      TODO Optimistic Update
+           merge the messages and typing box
+           the message from the pusher is coming from the current user do nothing and make it optimistic
+        
+    */
+
     const messageHandler = (message: FullMessage) => {
       axios.post(`/api/conversations/${conversationId}/seen`);
       setMessages((current) => {
@@ -57,7 +64,7 @@ const Messages = ({ initialMessages, conversationId }: Props) => {
     };
   }, [conversationId]);
 
-  if (!messages.length)
+  if (!messages?.length)
     return (
       <EmptyState
         title="Started a Conversation"
@@ -67,7 +74,7 @@ const Messages = ({ initialMessages, conversationId }: Props) => {
 
   return (
     <div className="flex h-full flex-col gap-2 overflow-auto p-4 scrollbar-hide">
-      {messages.map((message) => (
+      {messages?.map((message) => (
         <MessageBox
           key={message.id}
           isLast={messages[messages.length - 1].id === message.id}
