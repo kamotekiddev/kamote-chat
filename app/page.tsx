@@ -49,8 +49,6 @@ export default function SignIn() {
     signIn("github", { redirect: false, callbackUrl: "/chats" })
       .then((response) => {
         if (!response?.ok && response?.error) setError(response.error);
-        console.log(response?.url);
-        // router.replace(response?.url as string);
       })
       .catch((error) => {
         setError("Internal Server Error");
@@ -62,8 +60,6 @@ export default function SignIn() {
     signIn("google", { redirect: false, callbackUrl: "/chats" })
       .then((response) => {
         if (!response?.ok && response?.error) setError(response.error);
-        console.log(response?.url);
-        // router.replace(response?.url as string);
       })
       .catch((error) => {
         setError("Internal Server Error");
