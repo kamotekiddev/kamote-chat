@@ -10,7 +10,7 @@ interface Props {
 }
 const Avatar = ({ user }: Props) => {
   const { members } = useActiveUserList();
-  const isActive = _.includes(members, user.email);
+  const isActive = _.includes(members, user?.email);
 
   return (
     <div className="relative select-none">

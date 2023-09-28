@@ -7,6 +7,7 @@ import { Message, User } from "@prisma/client";
 import { pusherClient } from "@/libs/pusher";
 import MessageBox from "./MessageBox";
 import EmptyState from "@/components/EmptyState";
+import TypingBox from "./TypingBox";
 
 export interface FullMessage extends Message {
   sender: User;
@@ -16,8 +17,10 @@ export interface FullMessage extends Message {
 interface Props {
   initialMessages: FullMessage[];
   conversationId: string;
+  user: User;
 }
-const Messages = ({ initialMessages, conversationId }: Props) => {
+const Messages = ({ initialMessages, conversationId, user }: Props) => {
+  const [textMessage, setTextMessage] = useState("");
   const [messages, setMessages] = useState<FullMessage[]>(initialMessages);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -29,19 +32,14 @@ const Messages = ({ initialMessages, conversationId }: Props) => {
     pusherClient.subscribe(conversationId);
     bottomRef.current?.scrollIntoView();
 
-    /* 
-      TODO Optimistic Update
-           merge the messages and typing box
-           the message from the pusher is coming from the current user do nothing and make it optimistic
-        
-    */
-
-    const messageHandler = (message: FullMessage) => {
+    const messageHandler = (incomingMessage: FullMessage) => {
       axios.post(`/api/conversations/${conversationId}/seen`);
-      setMessages((current) => {
-        if (_.find(current, { id: message.id })) return current;
-        return [...current, message];
-      });
+      setTimeout(() => {
+        setMessages((current) => {
+          if (_.find(current, { id: incomingMessage.id })) return current;
+          return [...current, incomingMessage];
+        });
+      }, 2000);
 
       bottomRef.current?.scrollIntoView();
     };
@@ -62,26 +60,63 @@ const Messages = ({ initialMessages, conversationId }: Props) => {
       pusherClient.unbind("messages:new", messageHandler);
       pusherClient.unbind("message:update", updateMessageHandler);
     };
-  }, [conversationId]);
+  }, [conversationId, user.id]);
 
-  if (!messages?.length)
-    return (
-      <EmptyState
-        title="Started a Conversation"
-        message="Start typing and send a message to each other"
-      />
+  const handleSendMessage = async (text: string) => {
+    const id = Date.now().toString();
+    setTextMessage("");
+
+    setMessages((current) => [
+      ...current,
+      {
+        id,
+        body: text,
+        sender: user,
+        senderId: user.id,
+        conversationId,
+      } as FullMessage,
+    ]);
+
+    bottomRef.current?.scrollIntoView();
+
+    const response = await fetch("/api/messages", {
+      method: "POST",
+      body: JSON.stringify({ message: text, conversationId }),
+    });
+
+    const data = await response.json();
+
+    setMessages((currentMessages) =>
+      currentMessages.map((currentMessage) =>
+        currentMessage.id === id ? data : currentMessage
+      )
     );
+  };
 
   return (
-    <div className="flex h-full flex-col gap-2 overflow-auto p-4 scrollbar-hide">
-      {messages?.map((message) => (
-        <MessageBox
-          key={message.id}
-          isLast={messages[messages.length - 1].id === message.id}
-          message={message}
+    <div className="grid grid-rows-[1fr_auto] overflow-hidden">
+      {!messages.length && (
+        <EmptyState
+          title="Started a Conversation"
+          message="Start typing and send a message to each other"
         />
-      ))}
-      <div ref={bottomRef} className="mb-10" />
+      )}
+      <div className="flex h-full flex-col gap-2 overflow-auto p-4 scrollbar-hide">
+        {messages?.map((message) => (
+          <MessageBox
+            key={message.id}
+            isLast={messages[messages.length - 1].id === message.id}
+            message={message}
+          />
+        ))}
+        <div ref={bottomRef} className="mb-10" />
+      </div>
+      <TypingBox
+        key={conversationId}
+        value={textMessage}
+        onChange={setTextMessage}
+        onSentMessage={handleSendMessage}
+      />
     </div>
   );
 };
