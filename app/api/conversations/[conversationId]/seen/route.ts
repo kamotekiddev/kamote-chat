@@ -28,7 +28,10 @@ export async function POST(request: Request, { params }: Params) {
 
     const updatedMessage = await client.message.update({
       where: { id: lastMessage.id },
-      data: { seenByUsers: { connect: { id: currentUser.id } } },
+      data: {
+        seenByIds: [...lastMessage.seenByIds, currentUser.id],
+        seenByUsers: { connect: { id: currentUser.id } },
+      },
       include: { sender: true, seenByUsers: true },
     });
 
