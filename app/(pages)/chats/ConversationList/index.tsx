@@ -63,8 +63,7 @@ const ConversationList = ({ initialConversations, users }: Props) => {
       setConversations((current) =>
         current.filter((convo) => convo.id !== conversation.id)
       );
-
-      if (chatId === conversation.id) router.push("/chats");
+      if (chatId === conversation.id) router.replace("/chats");
     };
 
     pusherClient.bind("conversation:new", newConversationHandler);
@@ -79,7 +78,9 @@ const ConversationList = ({ initialConversations, users }: Props) => {
   }, [data?.user?.email, chatId, router]);
 
   const handleSelectConversation = (id: string) => {
+    setLoading(true);
     router.push(`/chats/${id}`);
+    setLoading(false);
   };
 
   return (
